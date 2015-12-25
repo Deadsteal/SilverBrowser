@@ -3,6 +3,8 @@
 
 package main;
 
+import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -40,8 +42,8 @@ public class BrowserWindow extends JFrame {
 		this.setLayout(layoutManager);
 		
 		searchBar = new JTextField("Search Bar");
-		searchBar.setSize(this.getWidth() - 100, 50);
-		searchBar.setLocation(0, 0);
+		searchBar.setPreferredSize(new Dimension(this.getWidth() - 100, 50));
+//		searchBar.
 		
 		// when you click on search bar, it highlights the text in it
 		searchBar.addFocusListener(new FocusListener() {
@@ -57,8 +59,17 @@ public class BrowserWindow extends JFrame {
 		});
 		
 		searchButton = new JButton("Go");
-		searchButton.setSize(50, 50);
-		searchButton.setLocation(searchBar.getWidth() + 10, 0);
+		searchButton.setPreferredSize(new Dimension(85, 50));
+
+		// put the go button next to the search bar in a cheeky manner
+		layoutManager.putConstraint(SpringLayout.WEST, searchButton, 5, SpringLayout.EAST, searchBar);
+		
+//		// the searchbutton will always be 5 px away from the edge of the window
+//		layoutManager.putConstraint(SpringLayout.EAST, searchButton, 0, SpringLayout.EAST, this);
+		
+		// the searchbar will always be 5 px away from the edge of the window
+		layoutManager.putConstraint(SpringLayout.WEST, searchBar, 5, SpringLayout.WEST, this);
+				
 		
 		this.add(searchBar);
 		this.add(searchButton);
