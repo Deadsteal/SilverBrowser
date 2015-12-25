@@ -90,60 +90,45 @@ public class BrowserWindow extends JFrame {
 		
 		this.setVisible(true);
 		
-		// test
-		String display = "";
-		try {
-			display = sendGetRequest("http://facebook.com/");
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-//		displayPane.setText(display);
+		searchButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String url = searchBar.getText().toString();
+				
+				String html = "nickname";
+				try {
+					html = loadPage(url);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				System.out.println(html);
+				displayPane.setText(html);
+				
+			}
+		
+		});
+		
 		
 	} // end of constructor
 	
-	private String sendGetRequest(String url) throws Exception {
-		
-//		URL urlObj = new URL(url);
-//		
-//		HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
-//		
-//		// add request header and assorted garbage
-//		connection.setRequestMethod("GET");
-//		connection.setRequestProperty("User-Agent", "silverbrowser.1"); // TODO: Fix this?
-//		connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5"); // make sure the response is in english
-//	
-//		// what response did the server send?
-//		int responseCode = connection.getResponseCode();
-//		System.out.println("Response code from " + url + " was " + Integer.toString(responseCode));
-//	
-//		// read the response
-//		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//	
-//		String inputLine;
-//		StringBuffer responseBuffer = new StringBuffer();
-//		
-//		while ((inputLine = in.readLine()) != null) {
-//			responseBuffer.append(inputLine);
-//		}
-//		in.close();
-//		
-//		String response = responseBuffer.toString();		
-//		
-//		Jsoup.
-//		
-		
+	private String loadPage(String url) throws Exception {
+			
 		// Jsoup reduced all this code to 1 line
 		String html = Jsoup.connect(url).get().html();
-		System.out.println(html);
-		displayPane.setText(html);
+//		
+//		System.out.println(html);
+		
 		return html;
 		
-//		System.out.println(response);
-//		
-//		return response;
-		
-	}  // end of sendGetRequest
+	}  // end of loadPage
+	
+	
+	
+	
 	
 	
 	public static void main(String args[]) {
