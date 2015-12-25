@@ -9,9 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.*;
-
 
 public class BrowserWindow extends JFrame {
 
@@ -76,13 +79,59 @@ public class BrowserWindow extends JFrame {
 
 		this.setVisible(true);
 		
-	}
+		// test
+		try {
+			sendGetRequest("http://www.google.com");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	} // end of constructor
 	
+	private void sendGetRequest(String url) throws Exception {
+		
+		URL urlObj = new URL(url);
+		
+		HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+		
+		// add request header and assorted garbage
+		connection.setRequestMethod("GET");
+		connection.setRequestProperty("User-Agent", "silverbrowser.1"); // TODO: Fix this?
+		connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5"); // make sure the response is in english
+	
+		// what response did the server send?
+		int responseCode = connection.getResponseCode();
+		System.out.println("Response code from " + url + " was " + Integer.toString(responseCode));
+	
+		// read the response
+		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	
+		String inputLine;
+		StringBuffer responseBuffer = new StringBuffer();
+		
+		while ((inputLine = in.readLine()) != null) {
+			responseBuffer.append(inputLine);
+		}
+		in.close();
+		
+		String response = responseBuffer.toString();
+		
+		System.out.println(response);
+		
+	}  // end of sendGetRequest
 	
 	
 	public static void main(String args[]) {
 		// create a new window
-		BrowserWindow newWindow = new BrowserWindow();
-	}
+		
+		try {
+			BrowserWindow newWindow = new BrowserWindow();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	} // end of main
 	
-}
+} // end of class
